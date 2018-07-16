@@ -13,6 +13,7 @@
 		DF56B11A20FD08E20062650E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF56B11920FD08E20062650E /* Assets.xcassets */; };
 		DF56B11D20FD08E20062650E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF56B11B20FD08E20062650E /* LaunchScreen.storyboard */; };
 		DF56B12520FD08F70062650E /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56B12420FD08F70062650E /* DrawView.swift */; };
+		DF56B12720FD3C620062650E /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56B12620FD3C620062650E /* MenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		DF56B11C20FD08E20062650E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DF56B11E20FD08E20062650E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DF56B12420FD08F70062650E /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		DF56B12620FD3C620062650E /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				DF56B11220FD08E10062650E /* AppDelegate.swift */,
 				DF56B11420FD08E10062650E /* ViewController.swift */,
 				DF56B12420FD08F70062650E /* DrawView.swift */,
+				DF56B12620FD3C620062650E /* MenuView.swift */,
 				DF56B11620FD08E10062650E /* Main.storyboard */,
 				DF56B11920FD08E20062650E /* Assets.xcassets */,
 				DF56B11B20FD08E20062650E /* LaunchScreen.storyboard */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF56B11520FD08E10062650E /* ViewController.swift in Sources */,
+				DF56B12720FD3C620062650E /* MenuView.swift in Sources */,
 				DF56B11320FD08E10062650E /* AppDelegate.swift in Sources */,
 				DF56B12520FD08F70062650E /* DrawView.swift in Sources */,
 			);
