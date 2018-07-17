@@ -39,6 +39,18 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func clear(_ sender: Any) {
+        drawView.clear()
+    }
+    
+    @IBAction func redo(_ sender: Any) {
+        drawView.redo()
+    }
+    
+    @IBAction func undo(_ sender: Any) {
+        drawView.undo()
+    }
+    
     @IBAction func showMenu(_ sender: Any) {
         if self.menuView.visible {
             self.hideMenuAnumated()

@@ -24,14 +24,19 @@ class DrawView: UIView {
     }
     
     func redo() {
-        if let layer = layers.first(where: {$0.superlayer == nil}) {
-            layer.removeFromSuperlayer()
+        if let layer = layers.first(where: { $0.superlayer == nil }) {
+            self.layer.addSublayer(layer)
         }
     }
     
     func undo() {
-        if let i = layers.index(where: {$0.superlayer == nil}) {
-            self.layer.addSublayer(layers[i])
+        if let i = layers.index(where: { $0.superlayer == nil }) {
+            if i > 0 {
+                layers[i - 1].removeFromSuperlayer()
+            }
+        }
+        else {
+            layers.last?.removeFromSuperlayer()
         }
     }
     
