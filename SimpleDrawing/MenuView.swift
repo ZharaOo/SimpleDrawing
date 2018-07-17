@@ -34,8 +34,8 @@ class MenuView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        let frame = UIScreen.main.bounds
-        self.frame = CGRect(x: -frame.width / 2.0, y: 0.0, width: frame.width / 2.0, height: frame.height)
+//        let frame = UIScreen.main.bounds
+//        self.frame = CGRect(x: -frame.width / 2.0, y: 0.0, width: frame.width / 2.0, height: frame.height)
         
         colorView.layer.borderColor = UIColor.black.cgColor
         colorView.layer.borderWidth = 1.0

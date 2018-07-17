@@ -9,9 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-
     @IBOutlet weak var menuView: MenuView!
     @IBOutlet weak var menuButton: UIButton!
+    @IBOutlet weak var xMenuPos: NSLayoutConstraint!
     
     var drawView: DrawView!
     
@@ -22,8 +22,8 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let frame = menuButton.frame
-        menuButton.frame = CGRect(x: menuView.frame.maxX + 10, y: frame.minY, width: frame.width, height: frame.height)
+//        let frame = menuButton.frame
+//        menuButton.frame = CGRect(x: menuView.frame.maxX + 10, y: frame.minY, width: frame.width, height: frame.height)
         
         drawView = DrawView(frame: UIScreen.main.bounds)
         self.view.addSubview(drawView)
@@ -38,18 +38,17 @@ class ViewController: UIViewController {
             else {
                 self.showMenuAnimated()
             }
+            self.view.layoutSubviews()
         })
     }
     
     func showMenuAnimated() {
-        self.menuView.frame = CGRect(x: 0, y: self.menuView.frame.minY, width: self.menuView.frame.width, height: self.menuView.frame.height)
-        self.menuButton.frame = CGRect(x: self.menuButton.frame.minX + self.menuView.frame.width, y: self.menuButton.frame.minY, width: self.menuButton.frame.width, height: self.menuButton.frame.height)
+        xMenuPos.constant = 0
         self.menuView.visible = true
     }
     
     func hideMenuAnumated() {
-        self.menuView.frame = CGRect(x: -self.menuView.frame.width, y: self.menuView.frame.minY, width: self.menuView.frame.width, height: self.menuView.frame.height)
-        self.menuButton.frame = CGRect(x: self.menuButton.frame.minX - self.menuView.frame.width, y: self.menuButton.frame.minY, width: self.menuButton.frame.width, height: self.menuButton.frame.height)
+        xMenuPos.constant = -self.menuView.frame.width
         self.menuView.visible = false
         
         let (lineWidth, color) = menuView.getParamsForDrawing()
