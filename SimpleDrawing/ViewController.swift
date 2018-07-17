@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     var drawView: DrawView!
     
     deinit {
-        
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidLoad() {
