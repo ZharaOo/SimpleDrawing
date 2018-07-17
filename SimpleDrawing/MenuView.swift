@@ -45,12 +45,7 @@ class MenuView: UIView {
         addObserver(self, forKeyPath: #keyPath(visible), options: .new, context: nil)
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(visible) && visible == false {
-            let params: [String: Any] = ["lineWidth": lineWidthSlider.value, "color": rgbColor.uiColor]
-            NotificationCenter.default.post(name: MenuView.MenuViewDrawingParamDidChangedNotification, object: params)
-        }
-    }
+    //MARK: - color sliders actions
     
     @IBAction func redChanging(_ sender: UISlider) {
         rgbColor.red = CGFloat(sender.value)
@@ -71,6 +66,17 @@ class MenuView: UIView {
         rgbColor.alpha = CGFloat(sender.value)
         colorView.backgroundColor = rgbColor.uiColor
     }
+    
+    //MARK: - observing
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(visible) && visible == false {
+            let params: [String: Any] = ["lineWidth": lineWidthSlider.value, "color": rgbColor.uiColor]
+            NotificationCenter.default.post(name: MenuView.MenuViewDrawingParamDidChangedNotification, object: params)
+        }
+    }
+    
+    //MARK: - getting params
     
     func getParamsForDrawing() -> (CGFloat, UIColor) {
         return (CGFloat(lineWidthSlider.value), rgbColor.uiColor)

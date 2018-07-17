@@ -26,27 +26,7 @@ class DrawView: UIView {
         return image
     }
     
-    func clear() {
-        layers.forEach() { $0.removeFromSuperlayer() }
-        layers = [CAShapeLayer]()
-    }
-    
-    func redo() {
-        if let layer = layers.first(where: { $0.superlayer == nil }) {
-            self.layer.addSublayer(layer)
-        }
-    }
-    
-    func undo() {
-        if let i = layers.index(where: { $0.superlayer == nil }) {
-            if i > 0 {
-                layers[i - 1].removeFromSuperlayer()
-            }
-        }
-        else {
-            layers.last?.removeFromSuperlayer()
-        }
-    }
+    //MARK: - preparing
     
     func prepareForDrawing() {
         layers = layers.filter(){ $0.superlayer != nil }
@@ -63,6 +43,8 @@ class DrawView: UIView {
         self.layer.addSublayer(layer)
         layers.append(layer)
     }
+    
+    //MARK: - drawing
     
     func drawCurve(with touch: UITouch) {
         let currentPoint = touch.location(in: self)
@@ -86,6 +68,8 @@ class DrawView: UIView {
     func midPointForPoints(_ p1: CGPoint, _ p2: CGPoint) -> CGPoint {
         return CGPoint(x: (p1.x + p2.x) / 2.0, y: (p1.y + p2.y) / 2.0)
     }
+    
+    //MARK: - touchs processing
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
@@ -111,6 +95,30 @@ class DrawView: UIView {
         super.touchesCancelled(touches, with: event)
         drawCurve(with: touches.first!)
         bezierPath!.close()
+    }
+    
+    //MARK: - image editing
+    
+    func clear() {
+        layers.forEach() { $0.removeFromSuperlayer() }
+        layers = [CAShapeLayer]()
+    }
+    
+    func redo() {
+        if let layer = layers.first(where: { $0.superlayer == nil }) {
+            self.layer.addSublayer(layer)
+        }
+    }
+    
+    func undo() {
+        if let i = layers.index(where: { $0.superlayer == nil }) {
+            if i > 0 {
+                layers[i - 1].removeFromSuperlayer()
+            }
+        }
+        else {
+            layers.last?.removeFromSuperlayer()
+        }
     }
     
 }

@@ -10,10 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var menuView: MenuView!
-    @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var xMenuPos: NSLayoutConstraint!
     
     var drawView: DrawView!
+    
+    //MARK: - life cycle
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -32,10 +33,26 @@ class ViewController: UIViewController {
         self.view.sendSubview(toBack: drawView)
     }
     
-    func drawingParamsChangedNotification(notification:Notification) -> Void {
-        if let params = notification.object as? [String: Any] {
-            drawView.lineWidth = params["lineWidth"] as! CGFloat
-            drawView.color = params["color"] as! UIColor
+    //MARK: - actions for buttons
+    
+    @IBAction func clear(_ sender: Any) {
+        drawView.clear()
+    }
+    
+    @IBAction func redo(_ sender: Any) {
+        drawView.redo()
+    }
+    
+    @IBAction func undo(_ sender: Any) {
+        drawView.undo()
+    }
+    
+    @IBAction func showMenu(_ sender: Any) {
+        if menuView.visible {
+            hideMenuAnumated()
+        }
+        else {
+            showMenuAnimated()
         }
     }
     
@@ -44,6 +61,44 @@ class ViewController: UIViewController {
             UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
         }
     }
+    
+    //MARK: - touches processing
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if menuView.visible {
+            hideMenuAnumated()
+        }
+        super.touchesBegan(touches, with: event)
+    }
+    
+    //MARK: - notification responce
+    
+    func drawingParamsChangedNotification(notification:Notification) -> Void {
+        if let params = notification.object as? [String: Any] {
+            drawView.lineWidth = params["lineWidth"] as! CGFloat
+            drawView.color = params["color"] as! UIColor
+        }
+    }
+    
+    //MARK: - menu display
+    
+    func showMenuAnimated() {
+        menuView.visible = true
+        UIView.animate(withDuration: 0.7, animations: {
+            self.xMenuPos.constant = 0
+            self.view.layoutSubviews()
+        })
+    }
+    
+    func hideMenuAnumated() {
+        menuView.visible = false
+        UIView.animate(withDuration: 0.7, animations: {
+            self.xMenuPos.constant = -self.menuView.frame.width
+            self.view.layoutSubviews()
+        })
+    }
+    
+    //MARK: - saving image responce
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let e = error {
@@ -59,50 +114,5 @@ class ViewController: UIViewController {
             present(alertController, animated: true, completion: nil)
         }
     }
-    
-    @IBAction func clear(_ sender: Any) {
-        drawView.clear()
-    }
-    
-    @IBAction func redo(_ sender: Any) {
-        drawView.redo()
-    }
-    
-    @IBAction func undo(_ sender: Any) {
-        drawView.undo()
-    }
-    
-    @IBAction func showMenu(_ sender: Any) {
-        if self.menuView.visible {
-            self.hideMenuAnumated()
-        }
-        else {
-            self.showMenuAnimated()
-        }
-    }
-    
-    func showMenuAnimated() {
-        self.menuView.visible = true
-        UIView.animate(withDuration: 0.7, animations: {
-            self.xMenuPos.constant = 0
-            self.view.layoutSubviews()
-        })
-    }
-    
-    func hideMenuAnumated() {
-        self.menuView.visible = false
-        UIView.animate(withDuration: 0.7, animations: {
-            self.xMenuPos.constant = -self.menuView.frame.width
-            self.view.layoutSubviews()
-        })
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.menuView.visible {
-            hideMenuAnumated()
-        }
-        super.touchesBegan(touches, with: event)
-    }
-    
 }
 
