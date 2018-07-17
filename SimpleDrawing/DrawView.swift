@@ -17,6 +17,14 @@ class DrawView: UIView {
     var color = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
     var lineWidth: CGFloat = 5.0
     
+    var uiImage: UIImage? {
+        UIGraphicsBeginImageContext(self.frame.size)
+        self.layer.render(in:UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
     
     func clear() {
         layers.forEach() { $0.removeFromSuperlayer() }

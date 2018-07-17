@@ -39,6 +39,27 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func save(_ sender: Any) {
+        if let image = drawView.uiImage {
+            UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        }
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let e = error {
+            let alertController = UIAlertController(title: "error", message: e.localizedDescription, preferredStyle: UIAlertControllerStyle.alert)
+            let alertActionCancel = UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel)
+            alertController.addAction(alertActionCancel)
+            present(alertController, animated: true, completion: nil)
+        }
+        else {
+            let alertController = UIAlertController(title: "Ok", message: "image saved", preferredStyle: UIAlertControllerStyle.alert)
+            let alertActionCancel = UIAlertAction(title: "Ok", style: UIAlertActionStyle.cancel)
+            alertController.addAction(alertActionCancel)
+            present(alertController, animated: true, completion: nil)
+        }
+    }
+    
     @IBAction func clear(_ sender: Any) {
         drawView.clear()
     }
