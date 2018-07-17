@@ -15,45 +15,53 @@ class ViewController: UIViewController {
     
     var drawView: DrawView!
     
+    deinit {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(forName: MenuView.MenuViewDrawingParamDidChangedNotification, object: nil, queue: nil, using: drawingParamsChangedNotification)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-//        let frame = menuButton.frame
-//        menuButton.frame = CGRect(x: menuView.frame.maxX + 10, y: frame.minY, width: frame.width, height: frame.height)
         
         drawView = DrawView(frame: UIScreen.main.bounds)
         self.view.addSubview(drawView)
         self.view.sendSubview(toBack: drawView)
     }
     
+    func drawingParamsChangedNotification(notification:Notification) -> Void {
+        if let params = notification.object as? [String: Any] {
+            drawView.lineWidth = params["lineWidth"] as! CGFloat
+            drawView.color = params["color"] as! UIColor
+        }
+    }
+    
     @IBAction func showMenu(_ sender: Any) {
+        if self.menuView.visible {
+            self.hideMenuAnumated()
+        }
+        else {
+            self.showMenuAnimated()
+        }
+    }
+    
+    func showMenuAnimated() {
+        self.menuView.visible = true
         UIView.animate(withDuration: 0.7, animations: {
-            if self.menuView.visible {
-                self.hideMenuAnumated()
-            }
-            else {
-                self.showMenuAnimated()
-            }
+            self.xMenuPos.constant = 0
             self.view.layoutSubviews()
         })
     }
     
-    func showMenuAnimated() {
-        xMenuPos.constant = 0
-        self.menuView.visible = true
-    }
-    
     func hideMenuAnumated() {
-        xMenuPos.constant = -self.menuView.frame.width
         self.menuView.visible = false
-        
-        let (lineWidth, color) = menuView.getParamsForDrawing()
-        drawView.color = color
-        drawView.lineWidth = lineWidth
+        UIView.animate(withDuration: 0.7, animations: {
+            self.xMenuPos.constant = -self.menuView.frame.width
+            self.view.layoutSubviews()
+        })
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

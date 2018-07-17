@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol MenuViewDelegate: class {
-    func setParams(lineWidth: CGFloat, color: UIColor)
-}
-
 struct RGBColor {
     var red: CGFloat = 0.0
     var green: CGFloat = 0.0
@@ -24,18 +20,20 @@ struct RGBColor {
 }
 
 class MenuView: UIView {
-    var visible = false
+    static let MenuViewDrawingParamDidChangedNotification = Notification.Name(rawValue: "MenuViewDrawingParamDidChangedNotification")
+    
+    @objc dynamic var visible = true
     var rgbColor = RGBColor()
     
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var lineWidthSlider: UISlider!
     
-    weak var delegate: MenuViewDelegate!
+    deinit {
+        removeObserver(self, forKeyPath: #keyPath(visible))
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-//        let frame = UIScreen.main.bounds
-//        self.frame = CGRect(x: -frame.width / 2.0, y: 0.0, width: frame.width / 2.0, height: frame.height)
         
         colorView.layer.borderColor = UIColor.black.cgColor
         colorView.layer.borderWidth = 1.0
@@ -43,6 +41,15 @@ class MenuView: UIView {
 
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 1.0
+        
+        addObserver(self, forKeyPath: #keyPath(visible), options: .new, context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(visible) && visible == false {
+            let params: [String: Any] = ["lineWidth": lineWidthSlider.value, "color": rgbColor.uiColor]
+            NotificationCenter.default.post(name: MenuView.MenuViewDrawingParamDidChangedNotification, object: params)
+        }
     }
     
     @IBAction func redChanging(_ sender: UISlider) {
